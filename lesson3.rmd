@@ -1,0 +1,86 @@
+Lesson 3
+====================================================================================================
+
+## Reading in Data
+```{r}
+setwd("/home/bruno/Documents/DataScienceForBusiness")
+list.files()
+
+pf <- read.csv("pseudo_facebook.tsv", sep = '\t')
+#or read.delim('pseudo_facebook.tsv')
+names(pf)
+```
+
+## Histogram of Users' birthdays
+```{r}
+install.packages('ggplot2')
+library(ggplot2)
+
+ggplot(aes(x = dob_day), data = pf) +
+  geom_histogram(binwidth = 0.5) +
+  scale_x_continuous(breaks = 1:31)
+?scale_x_continuous
+```
+
+## Faceting
+```{r}
+ggplot(data = pf, aes(x = dob_day)) +
+  geom_histogram(binwidth = 1) +
+  scale_x_continuous(breaks = 1:31) +
+  facet_wrap(~dob_month, ncol=3)
+```
+
+## Friend Count
+
+```{r}
+ggplot(aes(x = friend_count), data = pf) +
+  geom_histogram(binwidth = 25) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+
+```
+
+
+## Friends count for man and woman
+```{r}
+ggplot(aes(x = friend_count), data = pf) +
+  geom_histogram(binwidth = 25) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+  facet_wrap(~gender, ncol=2)
+```
+
+## Friends count for man and woman excluding man and woman
+```{r}
+ggplot(aes(x = friend_count), data = subset(pf, !is.na(gender))) +
+  geom_histogram(binwidth = 10) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+  facet_wrap(~gender)
+```
+
+## Statistics by gender
+```{r}
+by(pf$friend_count, pf$gender, summary)
+```
+
+
+## Tenure
+```{r}
+ggplot(aes(x = tenure), data = pf) +
+  geom_histogram(binwidth = 30, color = 'black', fill = '#099DD9')
+```
+
+## Tenure in years
+```{r}
+ggplot(aes(x = tenure/365), data = pf) +
+  geom_histogram(binwidth = .25, color = 'black', fill = '#F79420')
+```
+
+
+## Labeling plots
+```{r}
+ggplot(aes(x = tenure / 365), data = pf) +
+  geom_histogram(color = 'black', fill = '#F79420') +
+  scale_x_continuous(breaks = seq(1, 7, 1), limits = c(0, 7)) +
+  xlab('Number of years using Facebook') +
+  ylab('Number of users in sample')
+```
+
