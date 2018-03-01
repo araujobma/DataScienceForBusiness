@@ -3,7 +3,7 @@ Lesson 3
 
 ## Reading in Data
 ```{r}
-setwd("/home/bruno/Documents/DataScienceForBusiness")
+#setwd("/home/bruno/Documents/DataScienceForBusiness")
 list.files()
 
 pf <- read.csv("pseudo_facebook.tsv", sep = '\t')
@@ -187,7 +187,25 @@ by(pf$friend_count, pf$gender, summary)
 ```
 
 
+## Getting Logical
+```{r}
+summary(pf$mobile_likes)
+```
 
+```{r}
+summary(pf$mobile_likes > 0)
+```
+```{r}
+pf$mobile_check_in <- NA
+pf$mobile_check_in <- ifelse(pf$mobile_likes > 0, 1, 0)
+pf$mobile_check_in <- factor(pf$mobile_check_in)
+summary(pf$mobile_check_in)
+```
+
+```{r}
+#% percentage using mobile check-in
+sum(pf$mobile_check_in == 1)/length(pf$mobile_check_in)
+```
 
 
 
