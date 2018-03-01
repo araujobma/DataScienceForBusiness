@@ -84,3 +84,121 @@ ggplot(aes(x = tenure / 365), data = pf) +
   ylab('Number of users in sample')
 ```
 
+
+## User ages
+```{r}
+ggplot(aes(x = age), data = pf) +
+  geom_histogram(binwidth = 1, color='black', fill = '#5760AB') +
+  scale_x_continuous(breaks = seq(0, 113, 5))
+```
+```{r}
+summary(pf$age)
+```
+
+## Transforming Data
+
+```{r}
+summary(pf$friend_count)
+```
+```{r}
+summary(log10(pf$friend_count + 1)) # plus 1 for don't calculate log10(0) and get infinite values
+```
+```{r}
+summary(sqrt(pf$friend_count)) # plus 1 for don't calculate log10(0) and get infinite values
+```
+
+
+
+
+```{r}
+p1 <- ggplot(aes(x = friend_count), data = pf) +
+  geom_histogram()
+#p2 <- ggplot(aes(x = log10(friend_count)), data = pf) +
+#  geom_histogram()
+p2 <- p1 + scale_x_log10()
+#  geom_histogram()
+#p3 <- ggplot(aes(x = sqrt(friend_count)), data = pf) +
+#  geom_histogram()
+p3 <- p1 + scale_x_sqrt()
+
+#install.packages("gridExtra")
+library(gridExtra)
+grid.arrange(p1, p2, p3, ncol = 1)
+```
+
+## Frequency Plygons
+```{r}
+ggplot(aes(x = friend_count, y = ..count../sum(..count..)),
+       data = subset(pf, !is.na(gender))) +
+  geom_freqpoly(aes(color = gender), binwidth=10) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+  xlab('Friend Count') +
+  ylab('Proportion of users with that friend count')
+```
+
+## Frequency Polygons Likes
+```{r}
+ggplot(aes(x = www_likes), data = subset(pf, !is.na(gender))) +
+  geom_freqpoly(aes(color = gender)) +
+  scale_x_log10()
+
+```
+
+```{r}
+by(pf$www_likes, pf$gender, sum)
+```
+
+
+## Box Plots
+```{r}
+## Removing points, so alter IQR and median
+ggplot(aes(x = gender, y = friend_count), data = subset(pf, !is.na(gender))) +
+   scale_y_continuous(limits = c(0, 1000)) +
+  geom_boxplot() 
+  
+```
+
+```{r}
+## Don't remove points, so alter coord scales
+ggplot(aes(x = gender, y = friend_count), data = subset(pf, !is.na(gender))) +
+   coord_cartesian(ylim= c(0, 250)) +
+  geom_boxplot() 
+  
+```
+
+
+```{r}
+by(pf$friend_count, pf$gender, summary)
+```
+
+
+
+## Friendships Initiated
+
+```{r}
+ggplot(aes(x = gender, y = friendships_initiated), data = subset(pf, !is.na(gender))) +
+   coord_cartesian(ylim= c(0, 200)) +
+   geom_boxplot() 
+```
+
+
+```{r}
+by(pf$friend_count, pf$gender, summary)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
