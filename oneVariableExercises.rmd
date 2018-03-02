@@ -1,0 +1,54 @@
+---
+title: "OneVariableExercises"
+author: "Bruno Araujo"
+date: "1 de março de 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(ggplot2)
+data("diamonds")
+summary(diamonds)
+```
+```{r}
+dim(diamonds)
+
+```
+
+```{r}
+str(diamonds)
+```
+
+
+```{r}
+?diamonds
+diamonds$color
+```
+
+# Create a histogram of the price of
+# all the diamonds in the diamond data set.
+```{r}
+ggplot(aes(x = price), data = diamonds) +
+  geom_histogram(binwidth = 500, color = 'black', fill ='#5760AB')
+```
+
+```{r}
+summary(diamonds$price)
+```
+
+
+```{r}
+less500 <- subset(diamonds, price < 500, select = (price))
+less250 <- subset(diamonds, price < 250, select = (price))
+more_eq_15000 <- subset(diamonds, price >= 15000, select = (price))
+
+length(less500$price)
+length(less250$price)
+length(more_eq_15000$price)
+```
