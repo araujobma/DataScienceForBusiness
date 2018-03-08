@@ -87,4 +87,26 @@ qplot(x = price, data = diamonds) + facet_wrap(~cut, scales ="free_y")
 
 
 
+```{r}
+ggplot(aes(x = color, y = price), data = diamonds) +
+   scale_y_continuous(limits = c(0,6000)) +
+  geom_boxplot() 
+  
+```
+  
+  
+```{r}
+by(diamonds$price, diamonds$color, summary)
+```
+
+```{r}
+IQR(subset(diamonds, color == "J")$price)
+
+
+```
+
+```{r}
+IQR(subset(diamonds, color == "D")$price)
+```
+
   
